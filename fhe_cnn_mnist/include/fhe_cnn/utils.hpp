@@ -71,4 +71,36 @@ void print_timing(const std::chrono::time_point<std::chrono::high_resolution_clo
 
 } // namespace fhe_cnn
 
+
+/**
+ * Packing de 4 images dans un seul message
+ * 
+ * @param images Vecteur de 4 images (chacune 784 pixels)
+ * @param log_slots log2(nombre de slots)
+ * @param device CPU/GPU
+ * @return Message avec les 4 images packées
+ */
+heaan::Message<heaan::Complex> pack_4_images(
+    const std::vector<std::vector<double>>& images,
+    int log_slots,
+    heaan::Device device
+);
+
+/**
+ * Dépacker les résultats pour 4 images
+ * 
+ * @param ctxt Ciphertext résultat
+ * @param sk Clé secrète
+ * @param encoder Encodeur
+ * @param decryptor Déchiffreur
+ * @param output_size Taille de sortie par image (ex: 10 pour FC3)
+ * @return Vecteur de 4 résultats
+ */
+std::vector<std::vector<double>> unpack_4_results(
+    const heaan::ICiphertext& ctxt,
+    const heaan::ISecretKey& sk,
+    heaan::EnDecoder& encoder,
+    heaan::EnDecryptor& decryptor,
+    int output_size
+);
 #endif // FHE_CNN_UTILS_HPP

@@ -63,7 +63,7 @@ endif()
 # ------------------------------------------------------------
 # Copier les données dans le dossier de build
 # ------------------------------------------------------------
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data/ 
+file(COPY ${PROJECT_SOURCE_DIR}/data/ 
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data
 )
 
@@ -75,9 +75,59 @@ if(BUILD_TESTS)
     
     add_executable(test_fc tests/test_fc.cpp src/layers/fc.cpp)
     target_link_libraries(test_fc PRIVATE HEAAN2::HEAAN2)
-    target_include_directories(test_fc PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_include_directories(test_fc PRIVATE ${PROJECT_SOURCE_DIR}/include)
     add_test(NAME test_fc COMMAND test_fc)
-    
+
+    add_executable(test_conv2d tests/test_conv2d.cpp 
+        src/layers/conv2d.cpp 
+        src/utils/packing.cpp 
+        src/utils/key_utils.cpp
+        src/utils/io_utils.cpp
+    )
+    target_link_libraries(test_conv2d PRIVATE HEAAN2::HEAAN2)
+    target_include_directories(test_conv2d PRIVATE ${PROJECT_SOURCE_DIR}/include)
+    add_test(NAME test_conv2d COMMAND test_conv2d)
+
+    # Test Pooling
+    add_executable(test_pooling tests/test_pooling.cpp 
+        src/layers/pooling.cpp 
+        src/utils/packing.cpp 
+        src/utils/key_utils.cpp
+    )
+    target_link_libraries(test_pooling PRIVATE HEAAN2::HEAAN2)
+    target_include_directories(test_pooling PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    add_test(NAME test_pooling COMMAND test_pooling)
+
+    # Test ReLU
+    add_executable(test_relu tests/test_relu.cpp 
+        src/layers/relu.cpp 
+        src/utils/packing.cpp 
+        src/utils/key_utils.cpp
+    )
+    target_link_libraries(test_relu PRIVATE HEAAN2::HEAAN2)
+    target_include_directories(test_relu PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    add_test(NAME test_relu COMMAND test_relu)
+
+    # Test Bootstrapping
+    add_executable(test_bootstrap tests/test_bootstrap.cpp 
+        src/layers/bootstrapping.cpp 
+        src/utils/key_utils.cpp
+    )
+    target_link_libraries(test_bootstrap PRIVATE HEAAN2::HEAAN2)
+    target_include_directories(test_bootstrap PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    add_test(NAME test_bootstrap COMMAND test_bootstrap)
+
+    # Test one-hot
+    add_executable(test_onehot tests/test_onehot.cpp 
+        src/layers/onehot.cpp
+        src/layers/bootstrapping.cpp
+        src/utils/packing.cpp
+        src/utils/key_utils.cpp
+    )
+    target_link_libraries(test_onehot PRIVATE HEAAN2::HEAAN2)
+    target_include_directories(test_onehot PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    add_test(NAME test_onehot COMMAND test_onehot)
+
     if(USE_CUDA)
         target_link_libraries(test_fc PRIVATE CUDA::cudart_static)
     endif()

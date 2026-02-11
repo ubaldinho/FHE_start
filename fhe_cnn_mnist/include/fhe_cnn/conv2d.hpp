@@ -8,9 +8,14 @@
 namespace fhe_cnn {
 
 /**
- * Convolution 2D homomorphique
+ * Convolution 2D homomorphique - Version optimisée
  * 
- * @param input_enc Ciphertext de l'image d'entrée (packée ligne par ligne)
+ * Stratégie: 
+ * 1. Packer l'image d'entrée ligne par ligne dans les slots
+ * 2. Pour chaque position du kernel, extraire les 25 pixels
+ * 3. Diagonal method pour calculer toutes les convolutions en parallèle
+ * 
+ * @param input_enc Ciphertext avec image packée (H×W slots)
  * @param weight Poids [out_c][in_c][5][5] en clair
  * @param bias Bias [out_c] en clair
  * @param in_c Canaux d'entrée
@@ -22,8 +27,8 @@ namespace fhe_cnn {
  * @param out_w Largeur de sortie
  * @param sk Clé secrète
  * @param rot_keys Map des clés de rotation
+ * @param relin_key Clé de relinéarisation
  * @param eval Évaluateur homomorphe
- * @return Ciphertext de la sortie convoluée
  */
 heaan::Ptr<heaan::ICiphertext> homomorphic_conv2d(
     const heaan::ICiphertext& input_enc,
@@ -38,6 +43,7 @@ heaan::Ptr<heaan::ICiphertext> homomorphic_conv2d(
     int out_w,
     const heaan::ISecretKey& sk,
     std::map<int, heaan::Ptr<heaan::ISwKey>>& rot_keys,
+    const heaan::ISwKey& relin_key,
     heaan::HomEval& eval
 );
 
