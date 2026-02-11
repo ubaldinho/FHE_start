@@ -1,0 +1,10 @@
+conv1.weight 8 1 5 5
+conv1.bias 8
+conv2.weight 16 8 5 5
+conv2.bias 16
+fc1.weight 128 256
+fc1.bias 128
+fc2.weight 64 128
+fc2.bias 64
+fc3.weight 10 64
+fc3.bias 10
