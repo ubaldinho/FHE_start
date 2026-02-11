@@ -10,7 +10,7 @@ project(
 option(USE_CUDA "Utiliser CUDA pour l'accélération GPU" OFF)
 
 # Trouver HEAAN2 (devkit est au même niveau)
-set(HEAAN2_ROOT "../devkit")
+set(HEAAN2_ROOT "../../devkit")
 find_package(HEAAN2 REQUIRED HINTS ${HEAAN2_ROOT})
 
 # Configuration CUDA
@@ -27,6 +27,7 @@ set(EXERCICES
     horner
     goldschmidt
     rotate_sum
+    rotate_sum_simd
     row_method
     diagonal_method
     diagonal_bsgs
